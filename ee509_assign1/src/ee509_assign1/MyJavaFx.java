@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 public class MyJavaFx extends Application {
 	@Override
 	public void start(Stage primaryStage){
+	//JOHN FLANAGAN TEST2
 		
 		Pane pane = new Pane();
 		
