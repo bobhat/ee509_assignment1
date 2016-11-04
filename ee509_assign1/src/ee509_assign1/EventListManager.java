@@ -104,7 +104,7 @@ public class EventListManager {
 	/**
 	 * Check if the list does not contain events.
 	 *
-	 * @return isEmpty (boolean) : "true" if the list is empty, "false" viceversa.
+	 * @return isEmpty (boolean) : "true" if the list is empty, "false" viceversa. JF
 	 * 
 	 */
 	public boolean isEmpty() {
