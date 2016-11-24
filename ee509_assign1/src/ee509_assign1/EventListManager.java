@@ -32,7 +32,7 @@ public class EventListManager {
 	/**
 	 * Constructor of the class. It creates a LinkedList object.
 	 */
-	private EventListManager() {
+	public EventListManager() {
 		eventList = new LinkedList<Event>();
 	}
 
