@@ -23,6 +23,7 @@ public class EventListManager {
 	 * The instance of the EventList class.
 	 */
 	private static EventListManager instance;
+	private static int dropPackets;
 
 	/**
 	 * The event list implemented as a Java LinkedList object.
@@ -34,6 +35,7 @@ public class EventListManager {
 	 */
 	public EventListManager() {
 		eventList = new LinkedList<Event>();
+		this.dropPackets = 0;
 	}
 
 	/**
@@ -65,29 +67,34 @@ public class EventListManager {
 	public void insertEvent(Event event){
 
 		boolean isInserted = false;
-		
-		if(isEmpty()) {
-			eventList.addFirst(event);
-			isInserted = true;
-		}
-
-		else {
-			ListIterator<Event> iterator = eventList.listIterator();
-			while (iterator.hasNext()) {
-
-				Event listEvent = iterator.next();
-				if (event.getEventClock() <= listEvent.getEventClock()) {
-					
-					iterator.previous();
-					iterator.add(event);
-					isInserted = true;
-					break;
+		if(eventList.size() <31)
+		{
+			if(isEmpty()) {
+				eventList.addFirst(event);
+				isInserted = true;
+			}
+	
+			else {
+				ListIterator<Event> iterator = eventList.listIterator();
+				while (iterator.hasNext()) {
+	
+					Event listEvent = iterator.next();
+					if (event.getEventClock() <= listEvent.getEventClock()) {
+						
+						iterator.previous();
+						iterator.add(event);
+						isInserted = true;
+						break;
+					}
 				}
 			}
+	
+			if (!isInserted)
+				eventList.addLast(event);
 		}
-
-		if (!isInserted)
-			eventList.addLast(event);
+		else{
+			addDropPackets(1);
+		}
 	}
 
 	/**
@@ -109,7 +116,33 @@ public class EventListManager {
 	 */
 	public boolean isEmpty() {
 		boolean isEmpty = eventList.isEmpty();
+		
 		return isEmpty;
 	}
-
+	
+	public void removeAll()
+	{
+		//System.out.println(eventList.size());
+		eventList.removeAll(eventList);
+	}
+	
+	public int Count()
+	{
+		return eventList.size();
+	}
+	
+	public void addDropPackets(int num)
+	{
+		dropPackets = dropPackets + num;
+	}
+	
+	public int getDropPackets()
+	{
+		return dropPackets;
+	}
+	
+	public void setDropPackets()
+	{
+		dropPackets=0;
+	}
 }
