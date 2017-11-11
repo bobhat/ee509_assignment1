@@ -1,18 +1,16 @@
 package ee509_assign1;
 
+import java.util.ArrayList;
 
-import java.util.*;
+public class PacketQueue {
 
-public class Queue  {
-	
 	private ArrayList<Object> packetQ;
-		
-	public Queue()
+	
+	//private static PacketQueue instance;
+	
+	public PacketQueue()
 	{
 		this.packetQ = new ArrayList<Object>();
-		/*
-		 * tesetes
-		 */
 		
 	}
 	
@@ -21,5 +19,4 @@ public class Queue  {
 		this.packetQ.add(p);
 		
 	}
-	
 }
