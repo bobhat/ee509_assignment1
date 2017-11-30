@@ -21,13 +21,13 @@ public class StartSim {
 		EndClock = 0;
 		serviceTime =0;
 		packetCount = 1;
-		TotalTime = 10f;
-		Batch = 100;
+		TotalTime = 5f;
+		Batch = 1;
 		TotalDelay = 0;
 		MeanDelay = 0;
 		
-		Lamda = 0.0001f;
-		MU = 0.00000008f;
+		Lamda = 0.0008f;
+		MU = 0.0008f;
 		
 		
 		System.out.println("Lamda= " + Lamda + "MU= " + MU);
@@ -35,49 +35,46 @@ public class StartSim {
 		
 		long seed = 1;
 		RDM = new Random(seed);
-		
-		//EventList = EventListManager.getInstance();
+				
 		Event event1 = new Event(negExpon(RDM, Lamda),packetCount);
-		
-			
 		EventList = EventListManager.getInstance();
 		EventList.removeAll();
 		
 		Clock = 0;				
-		Event event33 = new Event(negExpon(RDM, Lamda),packetCount);
-		Clock = event33.getEventClock();
-		EventList.insertEvent(event33);
+		EventList.insertEvent(event1);
 		
 		
-		for(int i = 0; i<Batch;i++)
-		{
+		//for(int i = 0; i<Batch;i++)
+		//{
 			//System.out.println("\nBatch Number: " + (i+1));
-			TotalTime = 10f;
-			QueueDepartures =0;
-			EndClock = 0;
-			serviceTime =0;
-			packetCount = 1; 
-			TotalDelay = 0;
-			MeanDelay = 0;
-			TotalArrived = 0;
+			//TotalTime = 20f;
+			//QueueDepartures =0;
+			//EndClock = 0;
+			//serviceTime =0;
+			//packetCount = 1; 
+			//TotalDelay = 0;
+			//MeanDelay = 0;
+			///TotalArrived = 0;
 			
-			if(i>0){
+			/*if(i>0){
 				EventList.removeAll();
 				EventList.setDropPackets();
-				Event event34 = new Event(Clock + negExpon(RDM, Lamda), packetCount);
-				Clock = event34.getEventClock();
-				EventList.insertEvent(event1);
+				Event event2 = new Event(Clock + negExpon(RDM, Lamda), packetCount);
+				Clock = event2.getEventClock();
+				EventList.insertEvent(event2);
 			}
-		int n = 0;
-		TotalTime = TotalTime * (i+1);
+		int n = 0;*/
+		//TotalTime = TotalTime * (i+1);
 		
 		while(Clock < TotalTime)
 		{
-			Event event2 = new Event();
-			event2 = EventList.poll();
+			Event event2 = new Event(Clock + negExpon(RDM, Lamda), packetCount);
+			//EventList.insertEvent(event2);
+			//event2 = EventList.poll();
 			TotalArrived +=1;
 			ProcessPacket(event2);
 		}
+		//}
 		
 		//System.out.println("Clock: " + Clock + " Mean_Delay: " + TotalDelay/QueueDepartures);
 		//System.out.println("EndClock after " + QueueDepartures + " Packets = " + EndClock);
@@ -87,7 +84,7 @@ public class StartSim {
 		System.out.println("Total dropped packets: " + EventList.getDropPackets());
 		batchMeanDelay += TotalDelay/QueueDepartures;
 		
-		}
+		
 		System.out.println("Batch Mean Delay over " + Batch + " Trials = " + batchMeanDelay/100);
 	}
 		
@@ -130,6 +127,7 @@ public class StartSim {
 			EventList.insertEvent(event1);
 			
 			
+			
 	}
 	
 	public static void ServicePacket(Event event)
@@ -144,6 +142,9 @@ public class StartSim {
 		//MeanDelay = TotalDelay/QueueDepartures;
 		//System.out.println("Delay: " + TotalDelay + " MeanDelay: " + MeanDelay);
 		//System.out.println("QueueDepartures" + QueueDepartures);
+		
+		///yyoooooo oooo mtv raps
+		/// again
 	}
 	
 		public static double negExpon(Random RDM, float Lamda1)
