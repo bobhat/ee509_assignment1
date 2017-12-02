@@ -67,8 +67,7 @@ public class EventListManager {
 	public void insertEvent(Event event){
 
 		boolean isInserted = false;
-		if(eventList.size() <31)
-		{
+		
 			if(isEmpty()) {
 				eventList.addFirst(event);
 				isInserted = true;
@@ -91,10 +90,11 @@ public class EventListManager {
 	
 			if (!isInserted)
 				eventList.addLast(event);
-		}
-		else{
-			addDropPackets(1);
-		}
+	
+		
+		//else{
+		//	addDropPackets(1);
+		//}
 	}
 
 	/**
