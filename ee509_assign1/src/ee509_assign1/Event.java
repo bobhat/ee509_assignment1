@@ -33,6 +33,14 @@ public class Event {
 		
 	}
 	
+	public Event(double eventClock, double eventNum, String type) { 
+		this.setEventClock(eventClock);
+		this.setEventNum(eventNum);
+		this.setType(type);
+	
+		
+	}
+	
 	public Event(double eventClock, String Type) { 
 		this.setEventClock(eventClock);
 	}
