@@ -1,7 +1,7 @@
 package ee509_assign1;
 
 import java.util.*;
-import java.util.Timer;
+
 
 
 public class StartSim {
