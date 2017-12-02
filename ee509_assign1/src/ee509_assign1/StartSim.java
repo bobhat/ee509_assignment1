@@ -1,13 +1,14 @@
 package ee509_assign1;
 
 import java.util.*;
+import java.util.Timer;
 
 
 public class StartSim {
 	
-	public static double Batch, Clock,EndClock, TimeDelay, QueueDepartures, queueStatus, serviceTime ;
+	public static double Batch, Clock,EndClock, TimeDelay, QueueDepartures, queueStatus, serviceTime;
 	public static double packetCount, TotalDelay, MeanDelay, TotalArrived, batchMeanDelay;
-	public static long NumPackets, QueueLength, TotalPackets,  NumDepart;
+	public static long NumPackets, QueueLength, TotalPackets, ID,  NumDepart;
 	public static float Lamda, MU, TotalTime;
 
 	public static Random RDM;
@@ -21,12 +22,14 @@ public class StartSim {
 		EndClock = 0;
 		serviceTime =0;
 		packetCount = 1;
-		TotalTime = 5f;
+		TotalTime = 1f;
 		Batch = 1;
 		TotalDelay = 0;
 		MeanDelay = 0;
+		ID = 1;
 		
-		Lamda = 0.0008f;
+		
+		Lamda = 0.001f;
 		MU = 0.0008f;
 		
 		
@@ -36,7 +39,8 @@ public class StartSim {
 		long seed = 1;
 		RDM = new Random(seed);
 				
-		Event event1 = new Event(negExpon(RDM, Lamda),packetCount);
+		Event event1 = new Event(negExpon(RDM, Lamda),ID,"Arrival");
+		
 		EventList = EventListManager.getInstance();
 		EventList.removeAll();
 		
@@ -68,11 +72,24 @@ public class StartSim {
 		
 		while(Clock < TotalTime)
 		{
-			Event event2 = new Event(Clock + negExpon(RDM, Lamda), packetCount);
-			//EventList.insertEvent(event2);
-			//event2 = EventList.poll();
-			TotalArrived +=1;
-			ProcessPacket(event2);
+			Event event2 = EventList.poll();
+			Clock = event2.getEventClock();
+			
+			
+			if(event2.getEventType()== "Arrival")
+			{
+				ProcessPacket(event2);
+				TotalArrived +=1;
+				System.out.println("Arrival ID: " + event2.getEventNum() + " Clock:" + Clock);
+			}
+			else
+			{
+				DepartPacket(event2);
+				System.out.println("Depart ID: " + event2.getEventNum() + " Clock:" + Clock);	
+			}
+			
+			
+			
 		}
 		//}
 		
@@ -80,7 +97,7 @@ public class StartSim {
 		//System.out.println("EndClock after " + QueueDepartures + " Packets = " + EndClock);
 		//System.out.println("Mean Time Delay after " + QueueDepartures + " Packets = " + TotalDelay/QueueDepartures);
 		System.out.println("Totatl arrived packet: " + TotalArrived);
-		System.out.println("Total Departed packets: " + QueueDepartures);
+		System.out.println("Total Departed packets: " + NumDepart);
 		System.out.println("Total dropped packets: " + EventList.getDropPackets());
 		batchMeanDelay += TotalDelay/QueueDepartures;
 		
@@ -92,68 +109,79 @@ public class StartSim {
 	
 	public static void ProcessPacket(Event event)
 	{
-		queueStatus = Clock - EndClock;
-		if(queueStatus>=0)
+		double tempClock;
+		
+		if(EndClock == 0 )
 		{
-			ServicePacket(event);
-			//System.out.println("PacketNum: " + event.getEventNum()+ " Gone" );
-			if(QueueLength <= 0)
-			{
-				QueueLength = 0;
-			}
-			else
-			{
-				QueueLength--;
-			}
+			packetCount++;
+			tempClock = Clock + negExpon(RDM, MU);
+			//tempClock = Clock + MU;
+			event.setEventClock(tempClock);
+			event.setType("Depart");
+			EndClock = event.getEventClock();
 			
+			EventList.insertEvent(event);
+			ID++;
+			Event newEvent = new Event(Clock + negExpon(RDM, Lamda), ID, "Arrival");
+			//Event newEvent = new Event(Clock + Lamda, ID, "Arrival");
+			EventList.insertEvent(newEvent);
+			QueueLength++;
 			
 		}
 		else
 		{
-			EventList.insertEvent(event);
-			if(QueueLength < 0)
-			{
-				QueueLength = 0;
-			}
-			QueueLength++;
-			TimeDelay += Clock - EndClock;
-		}
-						
 			packetCount++;
-			
-			double interArrivalTime1 = negExpon(RDM, Lamda);
-			Event event1 = new Event(Clock + interArrivalTime1, packetCount);
-			Clock = event1.getEventClock();
-			EventList.insertEvent(event1);
-			
-			
-			
+			tempClock = event.getEventClock() + negExpon2(RDM, MU);
+			//tempClock = EndClock +  MU;
+			event.setEventClock(tempClock);
+			event.setType("Depart");
+			EventList.insertEvent(event);
+			EndClock = event.getEventClock();
+			ID++;
+			Event newEvent = new Event(Clock + negExpon(RDM, Lamda), ID, "Arrival");
+			//Event newEvent = new Event(Clock + Lamda, ID, "Arrival");
+			EventList.insertEvent(newEvent);
+			QueueLength++;
+		}	
 	}
 	
-	public static void ServicePacket(Event event)
+	public static void DepartPacket(Event event)
 	{
-		double pDelay1;
-		serviceTime = (negExpon(RDM, MU));
-		EndClock = Clock + serviceTime;
+		//Clock = event.getEventClock();
+		QueueLength--;
+		NumDepart++;
+			
 		
-		pDelay1 = EndClock - event.getEventClock();
-		QueueDepartures++;
-		TotalDelay += pDelay1;
-		//MeanDelay = TotalDelay/QueueDepartures;
-		//System.out.println("Delay: " + TotalDelay + " MeanDelay: " + MeanDelay);
-		//System.out.println("QueueDepartures" + QueueDepartures);
-		
-		///yyoooooo oooo mtv raps
-		/// again
 	}
 	
 		public static double negExpon(Random RDM, float Lamda1)
 		{
 			double temp;
 			temp = RDM.nextDouble();
+			//double temp2 = Clock + temp;
+			double temp4F;
 			
-			double temp4F = Math.exp((-Lamda1)*temp);
+				temp4F = Math.exp((-Lamda1)*temp);	
+			
+			
+			
+			
 			double temp1 = 1-temp4F;
+			//System.out.println("\nTime: " + temp1 + " Lamda: " + Lamda1);
+			return temp1;
+				
+		}
+		
+		public static double negExpon2(Random RDM, float MU)
+		{
+			double temp;
+			temp = RDM.nextDouble();
+			//double temp2; 
+			//temp2 = temp + EndClock;
+			
+			double temp4F = Math.exp((-MU)*temp);
+			double temp1 = 1-temp4F;
+			//System.out.println("\nTime: " + temp1 + " Lamda: " + Lamda1);
 			return temp1;
 				
 		}
