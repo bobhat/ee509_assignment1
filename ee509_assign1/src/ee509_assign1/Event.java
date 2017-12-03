@@ -9,6 +9,7 @@ public class Event {
 	private String eventType;
 	private long eventNum;
 	private double arrivalClock;
+	private double packetLen;
 
 	/**
 	 * Constructor of the class: to be developed by the student...
@@ -95,6 +96,14 @@ public class Event {
 
 	public void setArrivalClock(double arrivalClock) {
 		this.arrivalClock = arrivalClock;
+	}
+
+	public double getPacketLen() {
+		return packetLen;
+	}
+
+	public void setPacketLen(double packetLen) {
+		this.packetLen = packetLen;
 	}
 	
 	//Add attributes that are necessary to uniquely define the event object.
