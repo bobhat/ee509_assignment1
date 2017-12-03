@@ -8,6 +8,7 @@ public class Event {
 	private double eventClock;
 	private String eventType;
 	private long eventNum;
+	private double arrivalClock;
 
 	/**
 	 * Constructor of the class: to be developed by the student...
@@ -33,14 +34,7 @@ public class Event {
 		
 	}
 	
-	public Event(double eventClock, double eventNum, String type) { 
-		this.setEventClock(eventClock);
-		this.setEventNum(eventNum);
-		this.setType(type);
-	
 		
-	}
-	
 	public Event(double eventClock, String Type) { 
 		this.setEventClock(eventClock);
 	}
@@ -93,6 +87,14 @@ public class Event {
 	public void setEventNum(long eventNum) {
 		//System.out.println("met: setEventClock(double eventClock)");
 		this.eventNum = eventNum;
+	}
+
+	public double getArrivalClock() {
+		return arrivalClock;
+	}
+
+	public void setArrivalClock(double arrivalClock) {
+		this.arrivalClock = arrivalClock;
 	}
 	
 	//Add attributes that are necessary to uniquely define the event object.
