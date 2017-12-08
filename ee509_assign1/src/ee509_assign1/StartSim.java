@@ -260,7 +260,8 @@ public class StartSim {
 				}
 							
 				EventList.insertEvent(event);
-				QueueLength++;
+				QueueLength++;  
+				
 				
 				/*Used to write out the queuelength for Question 2.2 and 3.2 */
 				String printText = event.getEventClock()+ "Queue Lenght Arrive: " + QueueLength;
