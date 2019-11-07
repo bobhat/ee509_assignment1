@@ -7,7 +7,9 @@ public class Event {
 	 */
 	private double eventClock;
 	private String eventType;
-	private double eventNum;
+	private long eventNum;
+	private double arrivalClock;
+	private double packetLen;
 
 	/**
 	 * Constructor of the class: to be developed by the student...
@@ -18,13 +20,22 @@ public class Event {
 		
 	}
 	
-	public Event(double eventClock, double eventNum) { 
+	public Event(double eventClock, long eventNum) { 
 		this.setEventClock(eventClock);
 		this.setEventNum(eventNum);
 	
 		
 	}
 	
+	public Event(double eventClock, long eventNum, String type) { 
+		this.setEventClock(eventClock);
+		this.setEventNum(eventNum);
+		this.setType(type);
+	
+		
+	}
+	
+		
 	public Event(double eventClock, String Type) { 
 		this.setEventClock(eventClock);
 	}
@@ -74,9 +85,25 @@ public class Event {
 		this.eventType = eventType;
 	}
 	
-	public void setEventNum(double eventNum) {
+	public void setEventNum(long eventNum) {
 		//System.out.println("met: setEventClock(double eventClock)");
 		this.eventNum = eventNum;
+	}
+
+	public double getArrivalClock() {
+		return arrivalClock;
+	}
+
+	public void setArrivalClock(double arrivalClock) {
+		this.arrivalClock = arrivalClock;
+	}
+
+	public double getPacketLen() {
+		return packetLen;
+	}
+
+	public void setPacketLen(double packetLen) {
+		this.packetLen = packetLen;
 	}
 	
 	//Add attributes that are necessary to uniquely define the event object.
